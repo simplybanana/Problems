@@ -326,6 +326,94 @@ def threeSum(nums):
     return output
 
 
+def threeSumClosest(nums,target):
+    output = float("inf")
+    if len(nums) == 3:
+        return sum(nums)
+    nums.sort()
+    for i in range(len(nums) - 2):
+        j = i + 1
+        k = len(nums) - 1
+        while j < k:
+            s = nums[i] + nums[j] + nums[k]
+            if s == target:
+                return s
+            if abs(target - s) < abs(target - output):
+                output = s
+            if s < target:
+                j += 1
+            else:
+                k -= 1
+    return output
+
+
+def fourSum(nums,target):
+    output = []
+    if len(nums) < 4:
+        return []
+    nums.sort()
+    for l in range(len(nums) - 3):
+        if l > 0 and nums[l] == nums[l - 1]:
+            continue
+        for i in range(l + 1, len(nums) - 2):
+            j = i + 1
+            k = len(nums) - 1
+            if i > l + 1 and nums[i] == nums[i - 1]:
+                continue
+            while j < k:
+                if nums[j] + nums[k] + nums[i] + nums[l] == target:
+                    output.append([nums[l], nums[i], nums[j], nums[k]])
+                    j += 1
+                    k -= 1
+                    while j < k and nums[j] == nums[j - 1]:
+                        j += 1
+                    while j < k and nums[k] == nums[k + 1]:
+                        k -= 1
+                elif nums[j] + nums[k] + nums[i] + nums[l] < target:
+                    j += 1
+                else:
+                    k -= 1
+    return output
+
+
+def removeNthFromEnd(head,n):
+    seen = []
+    temp = head
+    while temp:
+        seen.append(temp)
+        temp = temp.next
+    if len(seen) == 1:
+        return None
+    if n == len(seen):
+        return seen[0].next
+    if n == 1:
+        seen[-2].next = None
+    else:
+        seen[-n - 1].next = seen[-n + 1]
+        seen[-1].next = None
+    return head
+
+
+def mergeTwoLists(l1,l2):
+    head = ListNode()
+    dummy = head
+    left = l1
+    right = l2
+    while left and right:
+        if left.val < right.val:
+            dummy.next = left
+            left = left.next
+        else:
+            dummy.next = right
+            right = right.next
+        dummy = dummy.next
+    if left:
+        dummy.next = left
+    elif right:
+        dummy.next = right
+    return head.next
+
+
 if __name__ == "__main__":
     """
     a = "babad"
@@ -350,13 +438,3 @@ if __name__ == "__main__":
     print(convert(a,numRows)=="PAHNAPLSIIGYIR")
     numRows = 4
     print(convert(a,numRows)=="PINALSIGYAHRPI")"""
-    a = [-1,0,1,2,-1,-4]
-    b = []
-    c = [0]
-    d = [1,1,-1,-1,0]
-    e = [-4,-2,-2,0,4]
-    print(threeSum(a))
-    #print(threeSum(b))
-    #print(threeSum(c))
-    #print(threeSum(d))
-    #print(threeSum(e))
