@@ -414,6 +414,46 @@ def mergeTwoLists(l1,l2):
     return head.next
 
 
+def generateParenthesis(n):
+    output = []
+
+
+    def backTrack(s="", left=0, right=0):
+        if len(s) == 2 * n:
+            output.append(s)
+            return
+        if left < n:
+            backTrack(s + '(', left + 1, right)
+        if right < left:
+            backTrack(s + ')', left, right + 1)
+
+    backTrack()
+    return output
+
+
+def mergekLists(lists):
+    ans = ListNode()
+    output = ans
+    vals = []
+    i = 0
+    while i < len(lists):
+        if lists[i]:
+            vals.append(lists[i].val)
+            i += 1
+        else:
+            lists.pop(i)
+    while vals:
+        lowest = min(vals)
+        index = vals.index(lowest)
+        output.next = ListNode(lowest)
+        lists[index] = lists[index].next
+        output = output.next
+        if not lists[index]:
+            lists.pop(index)
+        vals = list(a.val for a in lists)
+    return ans.next
+
+
 if __name__ == "__main__":
     """
     a = "babad"
